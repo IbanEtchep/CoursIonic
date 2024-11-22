@@ -1,0 +1,7 @@
+{
+  "name": "CoursIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
