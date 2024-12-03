@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from '@ionic/vue-router';
 import {RouteRecordRaw} from 'vue-router';
-import TodoList from '@/views/TodoList.vue';
+import TodoList from "@/feature/todos/views/TodoList.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
