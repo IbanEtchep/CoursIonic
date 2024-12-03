@@ -23,7 +23,9 @@
     "pinia": "^2.2.8",
     "vee-validate": "^4.14.7",
     "vue": "^3.3.0",
-    "vue-router": "^4.2.0"
+    "vue-router": "^4.2.0",
+    "vue-yup-form": "^1.0.8",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@capacitor/cli": "6.2.0",
