@@ -44,10 +44,6 @@ const rules = {
     required,
     minLength: minLength(3)
   },
-  description: {
-    required,
-    minLength: minLength(10)
-  }
 };
 
 const v$ = useVuelidate(rules, formData);
@@ -97,12 +93,6 @@ const handleSubmit = async () => {
               v-model="formData.description"
               placeholder="Description du Todo"
           ></ion-textarea>
-          <div class="error-message" v-if="v$.description.$error">
-            <span v-if="v$.description.required.$invalid">La description est requise</span>
-            <span v-else-if="v$.description.minLength.$invalid">
-              La description doit contenir au moins 10 caractères
-            </span>
-          </div>
         </ion-item>
 
         <ion-button

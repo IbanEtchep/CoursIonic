@@ -14,7 +14,12 @@ import {
   IonTitle,
   IonContent,
   IonActionSheet,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonBackButton
 } from "@ionic/vue";
+import { ellipsisVertical, chevronBack } from 'ionicons/icons';
 import TodoStatusBadge from "@/feature/todos/components/TodoStatusBadge.vue";
 import TodoEditForm from "@/feature/todos/components/TodoEditForm.vue";
 
@@ -49,7 +54,10 @@ const handleAction = (action: string) => {
 };
 
 const actionSheetButtons = ref([
-  { text: 'Supprimer', role: 'destructive', handler: () => handleAction('delete') },
+  { text: 'Supprimer',
+    role: 'destructive',
+    cssClass: 'ion-color-danger',
+    handler: () => handleAction('delete') },
   {
     text: todo.value?.completed ? 'Marquer comme en cours' : 'Marquer comme terminé',
     handler: () => handleAction('complete')
@@ -71,8 +79,16 @@ const handleSaveTodo = (updatedTodo: { title: string; description: string }) => 
   <ion-page>
     <ion-header>
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button default-href="/" :icon="chevronBack" text="Retour"></ion-back-button>
+        </ion-buttons>
         <ion-title>Détails du Todo</ion-title>
-        <TodoStatusBadge slot="end" :completed="todo.completed" class="ion-margin-end" />
+        <ion-buttons slot="end">
+          <TodoStatusBadge :completed="todo.completed" class="ion-margin-end" />
+          <ion-button @click="isActionSheetOpen = true">
+            <ion-icon :icon="ellipsisVertical"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -94,13 +110,6 @@ const handleSaveTodo = (updatedTodo: { title: string; description: string }) => 
             </ion-col>
           </ion-row>
         </div>
-        <ion-row>
-          <ion-col>
-            <ion-item button @click="isActionSheetOpen = true">
-              <ion-label>Actions</ion-label>
-            </ion-item>
-          </ion-col>
-        </ion-row>
       </ion-grid>
 
       <div v-else>

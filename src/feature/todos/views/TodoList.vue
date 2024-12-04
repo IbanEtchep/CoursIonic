@@ -17,7 +17,7 @@ const navigateToTodoDetails = (id: number) => {
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Todo list ({{ todoStore.totalTodos }})</ion-title>
+        <ion-title>Liste des tâches</ion-title>
       </ion-toolbar>
     </ion-header>
 

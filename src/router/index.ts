@@ -6,6 +6,10 @@ import TodoItemDetails from "@/feature/todos/views/TodoItemDetails.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/',
+    redirect: '/todos',
+  },
+  {
     path: '/todos',
     name: 'TodoList',
     component: TodoList,
