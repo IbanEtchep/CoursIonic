@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import type { Todo } from '../models/todo.model'
-import { TodoService } from '../services/todo.service'
+import {defineStore} from 'pinia'
+import {ref} from 'vue'
+import {TodoService} from '../services/todo.service'
+import {Todo} from "@/feature/todos/model/todo.model";
 
 const todoService = new TodoService()
 
@@ -31,6 +31,10 @@ export const useTodoStore = defineStore('todos', () => {
         }
     }
 
+    const getTodo = (id: number) => {
+        return todos.value.find(todo => todo.id === id)
+    }
+
     const saveTodos = () => {
         todoService.saveTodos(todos.value)
     }
@@ -43,8 +47,10 @@ export const useTodoStore = defineStore('todos', () => {
 
     return {
         todos,
+        saveTodos,
         addTodo,
         removeTodo,
-        toggleTodo
+        toggleTodo,
+        getTodo
     }
 })

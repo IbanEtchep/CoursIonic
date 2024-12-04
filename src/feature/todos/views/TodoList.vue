@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList } from '@ionic/vue'
 import TodoItem from "@/feature/todos/components/TodoItem.vue";
-import TodoAddItem from "@/feature/todos/components/TodoAddItem.vue";
-import { useTodoStore } from '@/core/stores/todo.store'
+import TodoAddItem from "@/feature/todos/components/TodoAddItemForm.vue";
+import { useTodoStore } from '@/feature/todos/stores/todo.store'
+import {useRouter} from "vue-router";
 
 const todoStore = useTodoStore()
+
+const router = useRouter();
+const navigateToTodoDetails = (id: number) => {
+  router.push({ name: 'TodoDetails', params: { id } });
+};
 </script>
 
 <template>
@@ -23,6 +29,7 @@ const todoStore = useTodoStore()
             :item="todo"
             @delete="todoStore.removeTodo"
             @toggle="todoStore.toggleTodo"
+            @show="navigateToTodoDetails"
         />
       </ion-list>
 

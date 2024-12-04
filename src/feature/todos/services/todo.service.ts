@@ -1,4 +1,4 @@
-import type { Todo } from '../models/todo.model'
+import {Todo} from "@/types/todo";
 
 export class TodoService {
     private STORAGE_KEY = 'todos'
