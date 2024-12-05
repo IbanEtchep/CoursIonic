@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useVuelidate } from '@vuelidate/core';
-import { required, minLength } from '@vuelidate/validators';
+import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
 import {
   IonInput,
   IonButton,
@@ -34,37 +33,35 @@ const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
-const formData = ref({
-  title: props.todo.title,
-  description: props.todo.description,
+const schema = yup.object({
+  title: yup.string().required('Le titre est requis').min(3, 'Le titre doit contenir au moins 3 caractères'),
 });
 
-const rules = {
-  title: {
-    required,
-    minLength: minLength(3)
-  },
-};
+const { handleSubmit} = useForm({
+  validationSchema: schema,
+  initialValues: {
+    title: props.todo.title,
+    description: props.todo.description,
+  }
+});
 
-const v$ = useVuelidate(rules, formData);
+const { value: title, errorMessage: titleError } = useField<string>('title');
+const { value: description, errorMessage: descriptionError } = useField<string>('description');
 
-const handleSubmit = async () => {
-  const isValid = await v$.value.$validate();
-  if (!isValid) return;
-
+const onSubmit = handleSubmit((values) => {
   emit("save", {
-    title: formData.value.title,
-    description: formData.value.description,
+    title: values.title,
+    description: values.description,
   });
   emit("close");
-};
+});
 </script>
 
 <template>
   <ion-modal :is-open="isOpen" @did-dismiss="$emit('close')">
     <ion-header>
       <ion-toolbar>
-        <ion-title>Edition de {{ formData.title }}</ion-title>
+        <ion-title>Edition de {{ title }}</ion-title>
         <ion-buttons slot="end">
           <ion-button @click="$emit('close')">Fermer</ion-button>
         </ion-buttons>
@@ -72,36 +69,20 @@ const handleSubmit = async () => {
     </ion-header>
 
     <ion-content>
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent="onSubmit">
         <ion-item>
           <ion-label position="floating">Titre</ion-label>
-          <ion-input
-              v-model="formData.title"
-              placeholder="Titre du Todo"
-          ></ion-input>
-          <div class="error-message" v-if="v$.title.$error">
-            <span v-if="v$.title.required.$invalid">Le titre est requis</span>
-            <span v-else-if="v$.title.minLength.$invalid">
-              Le titre doit contenir au moins 3 caractères
-            </span>
-          </div>
+          <ion-input v-model="title" placeholder="Titre du Todo"></ion-input>
+          <div class="error-message" v-if="titleError">{{ titleError }}</div>
         </ion-item>
 
         <ion-item>
           <ion-label position="floating">Description</ion-label>
-          <ion-textarea
-              v-model="formData.description"
-              placeholder="Description du Todo"
-          ></ion-textarea>
+          <ion-textarea v-model="description" placeholder="Description du Todo"></ion-textarea>
+          <div class="error-message" v-if="descriptionError">{{ descriptionError }}</div>
         </ion-item>
 
-        <ion-button
-            expand="full"
-            type="submit"
-            :disabled="v$.$invalid"
-        >
-          Sauvegarder
-        </ion-button>
+        <ion-button expand="full" type="submit">Sauvegarder</ion-button>
       </form>
     </ion-content>
   </ion-modal>
