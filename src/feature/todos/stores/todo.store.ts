@@ -12,7 +12,8 @@ export const useTodoStore = defineStore('todos', () => {
         const newTodo: Todo = {
             id: Date.now(),
             title,
-            completed: false
+            completed: false,
+            description: ''
         }
         todos.value.push(newTodo)
         saveTodos()
