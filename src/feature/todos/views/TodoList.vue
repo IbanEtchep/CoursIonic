@@ -6,8 +6,10 @@ import { useTodoStore } from '@/feature/todos/stores/todo.store'
 import {useRouter} from "vue-router";
 import {logOutOutline} from "ionicons/icons";
 import {useAuthStore} from "@/core/auth/stores/auth.store";
+import {onMounted} from "vue";
 
 const todoStore = useTodoStore()
+const authStore = useAuthStore()
 
 const router = useRouter();
 const navigateToTodoDetails = (id: number) => {
@@ -19,6 +21,11 @@ const logout = () => {
   router.push({ name: 'Login' });
 };
 
+onMounted(async () => {
+  if (authStore.user) {
+    await todoStore.loadTodos();
+  }
+});
 </script>
 
 <template>

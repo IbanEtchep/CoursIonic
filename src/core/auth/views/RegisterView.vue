@@ -136,22 +136,6 @@ const onSubmit = handleSubmit(async (values) => {
 </template>
 
 <style scoped>
-.ion-invalid {
-  --highlight-background: var(--ion-color-danger) !important;
-  --highlight-height: 2px;
-}
-
-.ion-valid {
-  --highlight-background: var(--ion-color-success);
-  --highlight-height: 2px;
-}
-
-.error-message {
-  color: var(--ion-color-danger);
-  font-size: 0.8em;
-  margin-bottom: 5px;
-}
-
 .password-strength {
   padding: 10px;
 }

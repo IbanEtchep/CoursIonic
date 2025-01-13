@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { useTodoStore } from "@/feature/todos/stores/todo.store";
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import {
   IonItem,
   IonGrid,
@@ -22,15 +22,27 @@ import {
 import { ellipsisVertical, chevronBack } from 'ionicons/icons';
 import TodoStatusBadge from "@/feature/todos/components/TodoStatusBadge.vue";
 import TodoEditForm from "@/feature/todos/components/TodoEditForm.vue";
+import {Todo} from "@/feature/todos/model/todo.model";
 
 const route = useRoute();
 const router = useRouter();
 const todoStore = useTodoStore();
 
-const todo = ref(todoStore.getTodo(Number(route.params.id)));
-
 const isActionSheetOpen = ref(false);
 const isEditModalOpen = ref(false);
+const isLoading = computed(() => todoStore.isLoading);
+
+const todo = ref<Todo | null>(null);
+
+onMounted(async () => {
+  try {
+    await todoStore.loadTodos();
+    const todoId = Number(route.params.id);
+    todo.value = todoStore.getTodo(todoId);
+  } catch (err) {
+    console.error('Erreur lors du chargement des todos:', err);
+  }
+});
 
 const handleAction = (action: string) => {
   if (!todo.value) return;
@@ -53,30 +65,41 @@ const handleAction = (action: string) => {
   isActionSheetOpen.value = false;
 };
 
-const actionSheetButtons = ref([
-  { text: 'Supprimer',
+const actionSheetButtons = computed(() => [
+  {
+    text: 'Supprimer',
     role: 'destructive',
     cssClass: 'ion-color-danger',
-    handler: () => handleAction('delete') },
+    handler: () => handleAction('delete')
+  },
   {
-    text: todo.value?.completed ? 'Marquer comme en cours' : 'Marquer comme terminé',
+    text: todo.value?.completed
+        ? 'Marquer comme en cours'
+        : 'Marquer comme terminé',
     handler: () => handleAction('complete')
   },
-  { text: 'Éditer', handler: () => handleAction('edit') },
-  { text: 'Annuler', role: 'cancel' }
+  {
+    text: 'Éditer',
+    handler: () => handleAction('edit')
+  },
+  {
+    text: 'Annuler',
+    role: 'cancel'
+  }
 ]);
 
-const handleSaveTodo = (updatedTodo: { title: string; description: string }) => {
+const handleSaveTodo = (updatedTodo: { title: string; description: string, dueDate: string }) => {
   if (!todo.value) return;
   todo.value.title = updatedTodo.title;
   todo.value.description = updatedTodo.description;
-  todoStore.saveTodos();
+  todo.value.dueDate = updatedTodo.dueDate;
+  todoStore.saveTodo(todo.value);
   isEditModalOpen.value = false;
 };
 </script>
 
 <template>
-  <ion-page>
+  <ion-page v-if="todo !== null">
     <ion-header>
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -93,6 +116,8 @@ const handleSaveTodo = (updatedTodo: { title: string; description: string }) => 
     </ion-header>
 
     <ion-content :fullscreen="true">
+      <div v-if="isLoading">Chargement...</div>
+
       <ion-grid v-if="todo">
         <div @click="isEditModalOpen = true">
           <ion-row>

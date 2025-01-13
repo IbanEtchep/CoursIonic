@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import type { Todo } from '@/types/todo'
-import { IonLabel, IonItem, IonCheckbox } from '@ionic/vue'
+import { IonLabel, IonItem, IonCheckbox, IonItemOption, IonItemOptions, IonItemSliding } from '@ionic/vue'
+import {Todo} from "@/feature/todos/model/todo.model";
 
 
 interface Props {
@@ -24,11 +24,10 @@ const emit = defineEmits<{
       <ion-checkbox
           slot="start"
           :checked="item.completed"
-          @click="emit('toggle', item.id)"
+          @ionChange="emit('toggle', item.id)"
       ></ion-checkbox>
 
-
-      <ion-label :class="{ completed: item.completed }" @click="emit('show', item.id)">
+      <ion-label :class="{ completed: item.completed }" @click.stop="emit('show', item.id)">
         {{ item.title }}
       </ion-label>
     </ion-item>

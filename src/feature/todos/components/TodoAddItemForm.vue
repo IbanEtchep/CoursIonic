@@ -30,11 +30,8 @@ const onSubmit = handleSubmit((values) => {
   <form @submit.prevent="onSubmit">
     <ion-item :class="{ 'ion-invalid': errorMessage }">
       <ion-input v-model="title" placeholder="Ajouter un élément"></ion-input>
+      <ion-note v-if="errorMessage" class="error-message">{{ errorMessage }}</ion-note>
     </ion-item>
-
-    <ion-note v-if="errorMessage" color="danger" class="error-message">
-      {{ errorMessage }}
-    </ion-note>
 
     <ion-button expand="block" type="submit" class="ion-margin">
       Ajouter
