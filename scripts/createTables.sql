@@ -27,3 +27,11 @@ CREATE POLICY "Users can delete their own todos"
 USING (auth.uid() = user_id);
 
 CREATE INDEX todos_user_id_idx ON todos(user_id);
+
+create table device_tokens (
+                               id uuid default uuid_generate_v4() primary key,
+                               user_id uuid references auth.users not null,
+                               push_token text not null,
+                               created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+                               unique(user_id, push_token)
+);

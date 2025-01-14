@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "123848049907",
+    "project_id": "todo-cours-ionic",
+    "storage_bucket": "todo-cours-ionic.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123848049907:android:7b75d23fdefa5a69422386",
+        "android_client_info": {
+          "package_name": "com.github.ibanetchep"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-XoA1l7xmeta1mYui2cqPpcL5hGhDoRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123848049907:android:cb42a18a5535a63a422386",
+        "android_client_info": {
+          "package_name": "fr.iban.todoionic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-XoA1l7xmeta1mYui2cqPpcL5hGhDoRc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,12 +5,10 @@ const config: CapacitorConfig = {
   appName: 'CoursIonic',
   webDir: 'public',
   plugins: {
-    LocalNotifications: {
-      smallIcon: "ic_notification",
-      iconColor: "#FF4081",
-      sound: "beep.wav",
-    },
-  },
+    PushNotifications: {
+      presentationOptions: ["badge", "sound", "alert"]
+    }
+  }
 };
 
 export default config;
