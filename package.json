@@ -25,6 +25,8 @@
     "@ionic/vue-router": "^8.0.0",
     "@supabase/supabase-js": "^2.46.2",
     "@vee-validate/rules": "^4.15.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "ionicons": "^7.4.0",
     "pinia": "^2.2.8",
     "vee-validate": "^4.14.7",

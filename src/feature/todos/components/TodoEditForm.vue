@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { useField, useForm } from 'vee-validate';
+import {useField, useForm} from 'vee-validate';
 import * as yup from 'yup';
 import {
-  IonInput,
   IonButton,
+  IonButtons,
+  IonContent,
+  IonDatetime,
+  IonDatetimeButton,
+  IonHeader,
+  IonInput,
   IonItem,
   IonLabel,
   IonModal,
-  IonContent,
   IonTextarea,
-  IonHeader,
-  IonToolbar,
   IonTitle,
-  IonButtons,
-  IonDatetime,
-  IonDatetimeButton,
+  IonToolbar,
 } from "@ionic/vue";
+
+import {format, toZonedTime} from 'date-fns-tz';
 
 interface Todo {
   title: string;
@@ -40,12 +42,25 @@ const schema = yup.object({
   dueDate: yup.date().nullable(),
 });
 
+function toUTC(localISOString: string) {
+  const date = new Date(localISOString);
+  return date.toISOString();
+}
+
+function convertUtcToParis(utcStr: string) {
+  const parisTimeZone = 'Europe/Paris';
+  const utcDate = new Date(utcStr);
+  const parisDate = toZonedTime(utcDate, parisTimeZone);
+
+  return format(parisDate, "yyyy-MM-dd'T'HH:mm:ssXXX", {timeZone: parisTimeZone});
+}
+
 const { handleSubmit } = useForm({
   validationSchema: schema,
   initialValues: {
     title: props.todo.title,
     description: props.todo.description,
-    dueDate: props.todo.dueDate || new Date().toISOString(),
+    dueDate: convertUtcToParis(props.todo.dueDate || new Date().toISOString()),
   }
 });
 
@@ -57,7 +72,7 @@ const onSubmit = handleSubmit((values) => {
   emit("save", {
     title: values.title,
     description: values.description,
-    dueDate: values.dueDate,
+    dueDate: toUTC(values.dueDate),
   });
   emit("close");
 });

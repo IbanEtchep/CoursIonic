@@ -134,6 +134,13 @@ const handleSaveTodo = (updatedTodo: { title: string; description: string, dueDa
               </ion-item>
             </ion-col>
           </ion-row>
+          <ion-row v-if="todo.dueDate">
+            <ion-col>
+              <ion-item>
+                <ion-label>Date d'échéance : {{ new Date(todo.dueDate).toLocaleString('fr-FR', {timeZone: 'Europe/Paris'}) }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
         </div>
       </ion-grid>
 
