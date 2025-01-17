@@ -58,7 +58,11 @@ const onSubmit = handleSubmit(async (values) => {
     await authStore.register(values.email, values.password);
     router.push('/todos');
   } catch (e) {
-    error.value = e.message;
+    if (e instanceof Error) {
+      error.value = e.message;
+    } else {
+      error.value = "Une erreur s'est produite";
+    }
   }
 });
 </script>

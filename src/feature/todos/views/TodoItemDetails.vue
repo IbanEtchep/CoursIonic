@@ -88,7 +88,7 @@ const actionSheetButtons = computed(() => [
   }
 ]);
 
-const handleSaveTodo = (updatedTodo: { title: string; description: string, dueDate: string }) => {
+const handleSaveTodo = (updatedTodo: { title: string; description: string, dueDate?: string }) => {
   if (!todo.value) return;
   todo.value.title = updatedTodo.title;
   todo.value.description = updatedTodo.description;

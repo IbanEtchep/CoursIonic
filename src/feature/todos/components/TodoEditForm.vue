@@ -32,7 +32,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  (e: "save", updatedTodo: { title: string; description: string; dueDate?: string }): void;
+  (e: "save", updatedTodo: { title: string; description: string; dueDate: null|string }): void;
   (e: "close"): void;
 }>();
 
@@ -43,6 +43,10 @@ const schema = yup.object({
 });
 
 function toUTC(localISOString: string) {
+  if(!localISOString) {
+    return null;
+  }
+
   const date = new Date(localISOString);
   return date.toISOString();
 }
@@ -72,7 +76,7 @@ const onSubmit = handleSubmit((values) => {
   emit("save", {
     title: values.title,
     description: values.description,
-    dueDate: toUTC(values.dueDate),
+    dueDate: toUTC(values.dueDate) || null,
   });
   emit("close");
 });
