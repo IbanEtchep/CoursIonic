@@ -23,6 +23,7 @@ import { ellipsisVertical, chevronBack } from 'ionicons/icons';
 import TodoStatusBadge from "@/feature/todos/components/TodoStatusBadge.vue";
 import TodoEditForm from "@/feature/todos/components/TodoEditForm.vue";
 import {Todo} from "@/feature/todos/model/todo.model";
+import {TodoEdit} from "@/feature/todos/types/todoEdit.type";
 
 const route = useRoute();
 const router = useRouter();
@@ -88,11 +89,11 @@ const actionSheetButtons = computed(() => [
   }
 ]);
 
-const handleSaveTodo = (updatedTodo: { title: string; description: string, dueDate?: string }) => {
+const handleSaveTodo = (updatedTodo: TodoEdit) => {
   if (!todo.value) return;
   todo.value.title = updatedTodo.title;
   todo.value.description = updatedTodo.description;
-  todo.value.dueDate = updatedTodo.dueDate;
+  todo.value.dueDate = updatedTodo.dueDate || undefined;
   todoStore.saveTodo(todo.value);
   isEditModalOpen.value = false;
 };

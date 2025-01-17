@@ -18,21 +18,16 @@ import {
 } from "@ionic/vue";
 
 import {format, toZonedTime} from 'date-fns-tz';
-
-interface Todo {
-  title: string;
-  description: string;
-  dueDate?: string;
-}
+import {TodoEdit} from "@/feature/todos/types/todoEdit.type";
 
 interface Props {
-  todo: Todo;
+  todo: TodoEdit;
   isOpen: boolean;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
-  (e: "save", updatedTodo: { title: string; description: string; dueDate: null|string }): void;
+  (e: "save", updatedTodo: TodoEdit): void;
   (e: "close"): void;
 }>();
 
@@ -44,7 +39,7 @@ const schema = yup.object({
 
 function toUTC(localISOString: string) {
   if(!localISOString) {
-    return null;
+    return undefined;
   }
 
   const date = new Date(localISOString);
@@ -76,7 +71,7 @@ const onSubmit = handleSubmit((values) => {
   emit("save", {
     title: values.title,
     description: values.description,
-    dueDate: toUTC(values.dueDate) || null,
+    dueDate: toUTC(values.dueDate) || undefined,
   });
   emit("close");
 });
